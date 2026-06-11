@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Language Translator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2 class="welcome">
+        Welcome to
+    </h2>
+
+    <h1 class="main-title">
+        AI Language Translator
+    </h1>
+
+    <p class="subtitle">
+        Translate the world instantly with Artificial Intelligence 🌍
+    </p>
+
+    <form method="POST">
+
+        <textarea
+            name="text"
+            id="inputText"
+            placeholder="Enter text here..."
+            required></textarea>
+
+        <div class="dropdowns">
+
+            <select name="source" id="sourceLang">
+
+                {% for code, language in languages.items() %}
+
+                <option value="{{ code }}">
+                    {{ language }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button type="button"
+                    class="swap-btn"
+                    onclick="swapLanguages()">
+
+                ⇄
+
+            </button>
+
+            <select name="target" id="targetLang">
+
+                {% for code, language in languages.items() %}
+
+                <option value="{{ code }}">
+                    {{ language }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <button type="submit"
+                class="translate-btn">
+
+            Translate
+
+        </button>
+
+    </form>
+
+    {% if translated_text %}
+
+    <div class="result">
+
+        <h2>Translated Text</h2>
+
+        <p id="translatedText">
+            {{ translated_text }}
+        </p>
+
+        <div class="buttons">
+
+            <button type="button"
+                    onclick="copyText()">
+
+                📋 Copy
+
+            </button>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<script>
+
+function copyText() {
+
+    let text =
+        document.getElementById(
+            "translatedText"
+        ).innerText;
+
+    navigator.clipboard.writeText(text);
+
+    alert("Copied Successfully!");
+}
+
+window.speechSynthesis.onvoiceschanged =
+function () {
+
+    window.speechSynthesis.getVoices();
+};
+
+function swapLanguages() {
+
+    let source =
+        document.getElementById(
+            "sourceLang"
+        );
+
+    let target =
+        document.getElementById(
+            "targetLang"
+        );
+
+    let temp = source.value;
+
+    source.value = target.value;
+
+    target.value = temp;
+}
+
+</script>
+
+</body>
+</html>
